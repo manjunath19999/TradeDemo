@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,25 +38,25 @@ public class TradeController {
 	}
 
 	@GetMapping("/findAllTrades")
-	public ResponseEntity<JSONArray> findAccounts(@RequestBody TradeModel tradeModel) {
-		return tradeService.findAllTrades(tradeModel);
+	public ResponseEntity<List<TradeModel>> findAllTrades() {
+		return tradeService.findAllTrades();
 	}
 
-	@GetMapping("/stocks/{stockSymbol}/trades?type={tradeType}&start={startDate}&end={endDate}")
-	public ResponseEntity<JSONArray> findAllByStockAndTradeType(@PathVariable("stockSymbol") String stockSymbol,
-			@PathVariable("tradeType") String tradeType, @PathVariable("startDate") Timestamp startDate,
-			@PathVariable("endDate") Timestamp endDate) {
+	@GetMapping("/{stockSymbol}/{tradeType}/{startDate}/{endDate}")
+	public ResponseEntity<List<TradeModel>> findAllByStockAndTradeType(@PathVariable("stockSymbol") String stockSymbol,
+			@PathVariable("tradeType") String tradeType, @PathVariable("startDate") LocalDateTime startDate,
+			@PathVariable("endDate") LocalDateTime endDate) {
 		return tradeService.findAllByStockAndTradeType(stockSymbol, tradeType, startDate, endDate);
 	}
 
-	@GetMapping("/stocks/{stockSymbol}/price?start={startDate}&end={endDate}")
+	@GetMapping("/{stockSymbol}/{startDate}/{endDate}")
 	public ResponseEntity<ResponseBean> findAllByStock(@PathVariable("stockSymbol") String stockSymbol,
-			@PathVariable("startDate") Timestamp startDate, @PathVariable("endDate") Timestamp endDate) {
+			@PathVariable("startDate") LocalDateTime startDate, @PathVariable("endDate") LocalDateTime endDate) {
 		return tradeService.findAllByStock(stockSymbol, startDate, endDate);
 	}
 	
 	@GetMapping("/users/{userID}")
-	public ResponseEntity<JSONArray> findAllByStock(@PathVariable("userID") Long id) {
+	public ResponseEntity<List<TradeModel>	> findAllByStock(@PathVariable("userID") Long id) {
 		return tradeService.findAllByUserId(id);
 	}
 

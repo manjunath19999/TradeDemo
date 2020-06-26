@@ -5,9 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.example.demo.model.TradeModel;
 
 @Entity
 @Table(name = "users")
@@ -23,8 +22,9 @@ public class UserModel implements Serializable {
 
 	private String name;
 
-	@JoinColumn(name = "user_id", nullable = false, unique = true)
-	private TradeModel tradeDetails;
+	@ManyToOne
+	@JoinColumn(name = "trade_id")
+	private UserModel userModel;
 
 	public Long getId() {
 		return id;

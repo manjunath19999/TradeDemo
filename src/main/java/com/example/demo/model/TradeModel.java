@@ -1,13 +1,14 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,9 +25,9 @@ public class TradeModel implements Serializable {
 
 	private String type;
 
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.ALL }, orphanRemoval = true)
-	@JoinColumn(name = "tradeDetails")
-	private UserModel userDetails;
+	@OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.ALL }, orphanRemoval = true)
+	@JoinColumn(name = "trade_id")
+	private List<UserModel> userModel;
 
 	private String symbol;
 
@@ -34,7 +35,7 @@ public class TradeModel implements Serializable {
 
 	private Double price;
 
-	private Timestamp createdOn;
+	private LocalDateTime createdOn;
 
 	public Long getId() {
 		return id;
@@ -52,12 +53,12 @@ public class TradeModel implements Serializable {
 		this.type = type;
 	}
 
-	public UserModel getUserDetails() {
-		return userDetails;
+	public List<UserModel> getUserModel() {
+		return userModel;
 	}
 
-	public void setUserDetails(UserModel userDetails) {
-		this.userDetails = userDetails;
+	public void setUserModel(List<UserModel> userModel) {
+		this.userModel = userModel;
 	}
 
 	public String getSymbol() {
@@ -84,11 +85,11 @@ public class TradeModel implements Serializable {
 		this.price = price;
 	}
 
-	public Timestamp getCreatedOn() {
+	public LocalDateTime getCreatedOn() {
 		return createdOn;
 	}
 
-	public void setCreatedOn(Timestamp createdOn) {
+	public void setCreatedOn(LocalDateTime createdOn) {
 		this.createdOn = createdOn;
 	}
 

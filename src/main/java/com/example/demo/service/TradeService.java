@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import org.json.JSONArray;
 import org.springframework.http.ResponseEntity;
 
 import com.example.demo.beans.ResponseBean;
@@ -14,13 +14,13 @@ public interface TradeService {
 
 	ResponseEntity<TradeModel> deleteAllTrade();
 
-	ResponseEntity<JSONArray> findAllTrades(TradeModel tradeModel);
+	ResponseEntity<List<TradeModel>> findAllTrades();
 
-	ResponseEntity<JSONArray>  findAllByStockAndTradeType(String stockSymbol, String tradeType, Timestamp startDate,
-			Timestamp endDate);
+	ResponseEntity<List<TradeModel>>   findAllByStockAndTradeType(String stockSymbol, String tradeType, LocalDateTime startDate,
+			LocalDateTime endDate);
 
-	ResponseEntity<ResponseBean> findAllByStock(String stockSymbol, Timestamp startDate, Timestamp endDate);
+	ResponseEntity<ResponseBean> findAllByStock(String stockSymbol, LocalDateTime startDate, LocalDateTime endDate);
 
-	ResponseEntity<JSONArray>  findAllByUserId(Long id);
+	ResponseEntity<List<TradeModel>>  findAllByUserId(Long id);
 
 }

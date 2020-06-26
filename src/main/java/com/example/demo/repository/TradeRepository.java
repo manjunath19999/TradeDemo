@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,16 +19,16 @@ public interface TradeRepository extends CrudRepository<TradeModel, Long> {
 	public List<TradeModel> findAllByOrderByIdAsc();
 
 	public List<TradeModel> findByTypeAndSymbolAndCreatedOnBetweenOrderByIdAsc(String type, String symbol,
-			Timestamp startDate, Timestamp endDate);
+			LocalDateTime startDate, LocalDateTime endDate);
 
 	public List<TradeModel> findBySymbol(String symbol);
 
-	@Query(value = "SELECT COALESCE(min(price),0)  FROM trades where  createdOn BETWEEN :startDate AND :endDate  and symbol = :sym ")
-	public BigDecimal minVal(String sym, Timestamp startDate, Timestamp endDate);
+	@Query(value = "SELECT  MIN(t.price ) as val  FROM trades as t , users as u where  u.trade_id  = t.id and  createdOn BETWEEN :startDate AND :endDate  and symbol = :sym ", nativeQuery = true)
+	public BigDecimal minVal(String sym, LocalDateTime startDate, LocalDateTime endDate);
 
-	@Query(value = "SELECT COALESCE(max(price),0) FROM trades where  createdOn BETWEEN :startDate AND :endDate   and symbol = :sym ")
-	public BigDecimal maxVal(String sym, Timestamp startDate, Timestamp endDate);
-	
-	public List<TradeModel> findByUserDetailsIdOrderByIdAsc(Long id);
+	@Query(value = "SELECT  MAX(t.price ) as val FROM trades as  t , users as u  where  u.trade_id  = t.id and  createdOn BETWEEN :startDate AND :endDate   and symbol = :sym ", nativeQuery = true)
+	public BigDecimal maxVal(String sym, LocalDateTime startDate, LocalDateTime endDate);
+
+	public List<TradeModel> findByUserModelIdOrderByIdAsc(Long id);
 
 }
