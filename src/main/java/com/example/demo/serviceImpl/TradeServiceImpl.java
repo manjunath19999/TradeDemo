@@ -1,8 +1,7 @@
 package com.example.demo.serviceImpl;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import com.example.demo.service.TradeService;
 
 @Service
 public class TradeServiceImpl implements TradeService {
-
-	private final DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
 
 	@Autowired
 	private TradeRepository tradeRepository;
@@ -55,14 +52,15 @@ public class TradeServiceImpl implements TradeService {
 	public ResponseEntity<List<TradeModel>> findAllByStockAndTradeType(String stockSymbol, String tradeType,
 			String startDate, String endDate) {
 
-		LocalDateTime localDateStart = LocalDateTime.parse(startDate, format);
-		LocalDateTime localDateEnd = LocalDateTime.parse(endDate, format);
 		List<TradeModel> list = tradeRepository.findBySymbol(stockSymbol);
 		if (list.isEmpty())
 			return new ResponseEntity<List<TradeModel>>(HttpStatus.NOT_FOUND);
 
-		List<TradeModel> tradeList = tradeRepository.findByTypeAndSymbolAndCreatedOnBetweenOrderByIdAsc(tradeType,
-				stockSymbol, localDateStart, localDateEnd);
+		Timestamp ts = Timestamp.valueOf(startDate.replace("T", " ").replace("Z", ""));
+		Timestamp tse = Timestamp.valueOf(endDate.replace("T", " ").replace("Z", ""));
+
+		List<TradeModel> tradeList = tradeRepository.findByTypeAndSymbolAndCreatedOnBetweenOrderByIdAsc(ts, tse,
+				tradeType, stockSymbol);
 		return new ResponseEntity<List<TradeModel>>(tradeList, HttpStatus.OK);
 	}
 
@@ -70,22 +68,25 @@ public class TradeServiceImpl implements TradeService {
 	public ResponseEntity<ResponseBean> findAllByStock(String stockSymbol, String startDate, String endDate) {
 
 		ResponseBean bean = new ResponseBean();
-		BigDecimal defaultValue = new BigDecimal(0);
 		List<TradeModel> list = tradeRepository.findBySymbol(stockSymbol);
 		if (list.isEmpty())
 			return new ResponseEntity<ResponseBean>(HttpStatus.NOT_FOUND);
 
-		LocalDateTime localDateStart = LocalDateTime.parse(startDate, format);
-		LocalDateTime localDateEnd = LocalDateTime.parse(endDate, format);
-		String minValue = tradeRepository.minVal(localDateStart, localDateEnd, stockSymbol);
-		String maxValue = tradeRepository.maxVal(localDateStart, localDateEnd, stockSymbol);
+		Timestamp ts = Timestamp.valueOf(startDate.replace("T", " ").replace("Z", ""));
+		Timestamp tse = Timestamp.valueOf(endDate.replace("T", " ").replace("Z", ""));
 
-		if (minValue.equals(defaultValue) && maxValue.equals(defaultValue)) {
+		BigDecimal minValue = tradeRepository.minVal(ts, tse, stockSymbol);
+		BigDecimal maxValue = tradeRepository.maxVal(ts, tse, stockSymbol);
+
+		if (minValue == null && maxValue == null) {
 			bean.setMessage("There are no trades in the given date range");
+			bean.setSymbol(stockSymbol);
 			return new ResponseEntity<ResponseBean>(bean, HttpStatus.OK);
 		}
 		bean.setMinValue(minValue);
 		bean.setMaxValue(maxValue);
+		bean.setMessage("success");
+
 		bean.setSymbol(stockSymbol);
 		return new ResponseEntity<ResponseBean>(bean, HttpStatus.OK);
 
