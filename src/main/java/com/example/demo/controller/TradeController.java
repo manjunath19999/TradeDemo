@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +43,14 @@ public class TradeController {
 
 	@GetMapping("/{stockSymbol}/{tradeType}/{startDate}/{endDate}")
 	public ResponseEntity<List<TradeModel>> findAllByStockAndTradeType(@PathVariable("stockSymbol") String stockSymbol,
-			@PathVariable("tradeType") String tradeType, @PathVariable("startDate") LocalDateTime startDate,
-			@PathVariable("endDate") LocalDateTime endDate) {
+			@PathVariable("tradeType") String tradeType, @PathVariable("startDate") String startDate,
+			@PathVariable("endDate") String endDate) {
 		return tradeService.findAllByStockAndTradeType(stockSymbol, tradeType, startDate, endDate);
 	}
 
 	@GetMapping("/{stockSymbol}/{startDate}/{endDate}")
 	public ResponseEntity<ResponseBean> findAllByStock(@PathVariable("stockSymbol") String stockSymbol,
-			@PathVariable("startDate") LocalDateTime startDate, @PathVariable("endDate") LocalDateTime endDate) {
+			@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
 		return tradeService.findAllByStock(stockSymbol, startDate, endDate);
 	}
 	

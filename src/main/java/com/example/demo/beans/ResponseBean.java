@@ -10,10 +10,10 @@ public class ResponseBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private BigDecimal minValue;
+	private String minValue;
 
-	private BigDecimal maxValue;
-	
+	private String maxValue;
+
 	private String symbol;
 
 	private String message;
@@ -23,7 +23,7 @@ public class ResponseBean implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BigDecimal getMinValue() {
+	public String getMinValue() {
 		return minValue;
 	}
 
@@ -35,15 +35,15 @@ public class ResponseBean implements Serializable {
 		this.message = message;
 	}
 
-	public void setMinValue(BigDecimal minValue) {
+	public void setMinValue(String minValue) {
 		this.minValue = minValue;
 	}
 
-	public BigDecimal getMaxValue() {
+	public String getMaxValue() {
 		return maxValue;
 	}
 
-	public void setMaxValue(BigDecimal maxValue) {
+	public void setMaxValue(String maxValue) {
 		this.maxValue = maxValue;
 	}
 
@@ -60,7 +60,5 @@ public class ResponseBean implements Serializable {
 		return "ResponseBean [minValue=" + minValue + ", maxValue=" + maxValue + ", symbol=" + symbol + ", message="
 				+ message + "]";
 	}
-
-	
 
 }

@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -16,10 +15,10 @@ public interface TradeService {
 
 	ResponseEntity<List<TradeModel>> findAllTrades();
 
-	ResponseEntity<List<TradeModel>>   findAllByStockAndTradeType(String stockSymbol, String tradeType, LocalDateTime startDate,
-			LocalDateTime endDate);
+	ResponseEntity<List<TradeModel>>   findAllByStockAndTradeType(String stockSymbol, String tradeType, String startDate,
+			String endDate);
 
-	ResponseEntity<ResponseBean> findAllByStock(String stockSymbol, LocalDateTime startDate, LocalDateTime endDate);
+	ResponseEntity<ResponseBean> findAllByStock(String stockSymbol, String startDate, String endDate);
 
 	ResponseEntity<List<TradeModel>>  findAllByUserId(Long id);
 
